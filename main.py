@@ -12,7 +12,7 @@ class Main(Login, Admin, User):
     def __init__(self):
         Login.__init__(self)
         self.loginw.mainloop()
-        self.loginw.state('withdraw')  # LOGIN WINDOW EXITS
+        self.loginw.state("withdraw")  # LOGIN WINDOW EXITS
         self.mainw = Toplevel(bg="#12171c")
         width = 1400
         height = 780
@@ -23,12 +23,12 @@ class Main(Login, Admin, User):
         self.mainw.geometry("%dx%d+%d+%d" % (width, height, x, y))
         self.mainw.title("Inventory")
         self.mainw.resizable(0, 0)
-        self.mainw.protocol('WM_DELETE_WINDOW', self.__Main_del__)
+        self.mainw.protocol("WM_DELETE_WINDOW", self.__Main_del__)
         self.cur, self.base = self.get_db_connection()
         self.getdetails()
 
     def get_db_connection(self):
-        conn = sqlite3.connect("./login.db")  
+        conn = sqlite3.connect("./login.db")
         cursor = conn.cursor()
         return cursor, conn
 
@@ -43,51 +43,80 @@ class Main(Login, Admin, User):
 
     # FETCH USER DETAILS FROM PRODUCTS,USERS AND INVENTORY TABLE
     def getdetails(self):
-        self.cur.execute("CREATE TABLE if not exists products(product_id varchar (20),product_name varchar (50) NOT NULL,product_desc varchar (50) NOT NULL,product_cat varchar (50),product_price INTEGER NOT NULL,stocks INTEGER NOT NULL,PRIMARY KEY(product_id));")
-        self.cur.execute("CREATE TABLE if not exists sales (Trans_id	INTEGER,invoice	INTEGER NOT NULL,Product_id	varchar (20),Quantity INTEGER NOT NULL,Date	varchar (20),Time varchar (20),PRIMARY KEY(Trans_id));")
+        self.cur.execute(
+            "CREATE TABLE if not exists products(product_id varchar (20),product_name varchar (50) NOT NULL,product_desc varchar (50) NOT NULL,product_cat varchar (50),product_price INTEGER NOT NULL,stocks INTEGER NOT NULL,PRIMARY KEY(product_id));"
+        )
+        self.cur.execute(
+            "CREATE TABLE if not exists sales (Trans_id	INTEGER,invoice	INTEGER NOT NULL,Product_id	varchar (20),Quantity INTEGER NOT NULL,Date	varchar (20),Time varchar (20),PRIMARY KEY(Trans_id));"
+        )
         self.cur.execute("select * from products ")
         self.products = self.cur.fetchall()
         capuser = self.username.get()
         capuser = capuser.upper()
-        self.cur.execute("select account_type from users where username= ? ", (capuser,))
+        self.cur.execute(
+            "select account_type from users where username= ? ", (capuser,)
+        )
         l = self.cur.fetchall()
         self.account_type = l[0][0]
         self.buildmain()
 
     #  ADD WIDGETS TO TOP OF MAIN WINDOW
     def buildmain(self):
-        if self.account_type == 'ADMIN':
+        if self.account_type == "ADMIN":
             super(Admin).__init__()
-            self.admin_mainmenu(8,8)
+            self.admin_mainmenu(8, 8)
         else:
             super(User).__init__()
-            self.user_mainmenu(8,8)
+            self.user_mainmenu(8, 8)
         self.logout.config(command=self.__Main_del__)
         self.changeuser.config(command=self.change_user)
-        self.topframe=LabelFrame(self.mainw,width=1400,height=120,bg="#252829")
-        self.topframe.place(x=0,y=0)
-        self.store_name = 'Vinayaka Ply - '
-        self.storelable=Label(self.topframe,text=self.store_name + "Stock Management System",bg="#252829",anchor="center")
-        self.storelable.config(font="Montserrat 30 bold",fg="snow")
-        self.storelable.place(x=280,y=30)
+        self.topframe = LabelFrame(self.mainw, width=1400, height=120, bg="#0c549c")
+        self.topframe.place(x=0, y=0)
+        lg = PhotoImage(file="images/logo.png")
+        lg = lg.subsample(1, 1)
+        self.myprofile = ttk.Label(
+            self.topframe,
+            image=lg,
+            compound=TOP,
+            background="#0c549c",
+            foreground="white",
+        )
+        self.myprofile.image = lg
+        self.myprofile.place(x=200, y=25)
+        self.store_name = "Vinayaka Ply - "
+        self.storelable = Label(
+            self.topframe,
+            text=self.store_name + "Stock Management System",
+            bg="#0c549c",
+            anchor="center",
+        )
+        self.storelable.config(font="Montserrat 30 bold", fg="snow")
+        self.storelable.place(x=280, y=30)
         mi = PhotoImage(file="images/myprofile.png")
-        mi = mi.subsample(1, 1) 
-        self.myprofile = ttk.Label(self.topframe,text=(self.username.get()).capitalize(),image=mi, compound=TOP,background="#252829",foreground="white")
+        mi = mi.subsample(1, 1)
+        self.myprofile = ttk.Label(
+            self.topframe,
+            text=(self.username.get()).capitalize(),
+            image=mi,
+            compound=TOP,
+            background="#0c549c",
+            foreground="white",
+        )
         self.myprofile.image = mi
-        self.myprofile.place(x=1300,y=15)
-        ''''
+        self.myprofile.place(x=1300, y=15)
+        """'
         if self.account_type == 'ADMIN':
             self.adminlabel= Label(self.topframe,text="Admin",font="Roboto 10 bold",bg="#4267b2")
         else:
             self.adminlabel = Label(self.topframe, text=" User", font="Roboto 10 bold", bg="#4267b2")
         self.adminlabel.place(x=1300,y=80)
-        '''
+        """
         # DATE TIME LABEL
-        ''''
+        """'
         now = datetime.datetime.now()
         self.datetimelabel= Label(self.topframe,text=str(now.day)+'/'+str(now.month)+'/'+str(now.year),font="Roboto 10 bold", bg="skyblue2")
         self.datetimelabel.place(x=1290,y=90)
-        '''
+        """
 
     # METHODS FOR ITEMS AND CHANGE USER BUTTONS
     def change_user(self):
@@ -98,7 +127,7 @@ class Main(Login, Admin, User):
             self.__init__()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     w = Main()
     w.base.commit()
     w.mainw.mainloop()
