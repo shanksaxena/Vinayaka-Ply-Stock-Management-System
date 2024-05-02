@@ -652,19 +652,19 @@ class Admin:
                 self.newitemprice.get(),
                 self.newitemstock.get(),
             ]
-            for i in range(0, len(l)):
-                if not l[i].isdigit():
-                    if i == 0:
-                        messagebox.showerror("Error", "Product ID should be in numeral")
-                    else:
-                        messagebox.showerror("Error", "Invalid Data Provided")
-                    return
-                elif int(l[i]) < 0:
-                    messagebox.showerror("Error", "Invalid Data Provided")
-                    return
+            # for i in range(0, len(l)):
+            #     if not l[i]:
+            #         if i == 0:
+            #             messagebox.showerror("Error", "Product ID should be a string")
+            #         else:
+            #             messagebox.showerror("Error", "Invalid Data Provided")
+            #         return
+            #     elif (l[i]) < 0:
+            #         messagebox.showerror("Error", "Invalid Data Provided")
+            #         return
         self.cur.execute(
             "select * from products where product_id = ?",
-            (int(self.newitemcode.get()),),
+            ((self.newitemcode.get()),),
         )
         l = self.cur.fetchall()
         if len(l) > 0:
@@ -673,9 +673,9 @@ class Admin:
         if self.desc_name.count(self.newitemdesc.get()) != 0:
             messagebox.showerror("Error", "Product with same description exsits!")
             return
-        x = int(self.newitemcode.get())
-        y = int(self.newitemprice.get())
-        z = int(self.newitemstock.get())
+        x = (self.newitemcode.get())
+        y = (self.newitemprice.get())
+        z = (self.newitemstock.get())
         self.cur.execute(
             "insert into products values(?,?,?,?,?,?)",
             (

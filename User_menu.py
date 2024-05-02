@@ -422,15 +422,15 @@ class User:
             i[5] = s[2] + "-" + s[1] + "-" + s[0]
             self.cur.execute(
                 "insert into sales values (?,?,?,?,?,?)",
-                (int(i[0]), int(self.invoice), int(i[1]), int(i[3]), i[5], i[6]),
+                (int(i[0]), int(self.invoice), i[1], i[3], i[5], i[6]),
             )
             self.cur.execute(
-                "select stocks from products where product_id=?", (int(i[1]),)
+                "select stocks from products where product_id=?", ((i[1]),)
             )
             l = self.cur.fetchall()
             self.cur.execute(
                 "update products set stocks=? where product_id=?",
-                (l[0][0] - self.id_qty[str(i[1])], int(i[1])),
+                (l[0][0] - self.id_qty[str(i[1])], (i[1])),
             )
             self.base.commit()
         messagebox.showinfo("Success", "Transaction Successful!")
