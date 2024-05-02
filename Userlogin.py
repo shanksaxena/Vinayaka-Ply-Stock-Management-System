@@ -92,7 +92,7 @@ class Login:
     def checkuser(self):
         s = self.username.get().upper()
         s1 = self.password.get().upper()
-        self.cur.execute("select * from users where username=? and password=?", (s, s1))
+        self.cur.execute("select * from profiles where username=? and password=?", (s, s1))
         l = self.cur.fetchall()
         if len(l) > 0:
             self.success()

@@ -369,7 +369,7 @@ class Admin:
             self.searchentry.place(x=195, y=25, height=35)
             self.resetbut.config(command=self.resetusertable)
             self.resetbut.place(x=415, y=23)
-            self.cur.execute("select username from users")
+            self.cur.execute("select username from profiles")
             li = self.cur.fetchall()
             a = []
             for i in range(0, len(li)):
@@ -779,7 +779,7 @@ class Admin:
     # FETCH USERS FROM USERS TABLE
     def getusers(self, x=0):
         ans = ""
-        self.cur.execute("select * from users")
+        self.cur.execute("select * from profiles")
         userslist = self.cur.fetchall()
         for i in userslist:
             self.tree.insert("", "end", values=(i))
@@ -804,7 +804,7 @@ class Admin:
                 messagebox.showerror("Error", "Unknown account type!")
                 return
             self.cur.execute(
-                "update users set password = ?,account_type = ? where username = ?;",
+                "update profiles set password = ?,account_type = ? where username = ?;",
                 (self.passwordedit.get(), self.accedit.get(), self.usernamedit.get()),
             )
             self.base.commit()
@@ -826,7 +826,7 @@ class Admin:
             messagebox.askyesno("Alert!", "Do you want to remove this profile?") == True
             and len(li) == 3
         ):
-            self.cur.execute("delete from users where username = ?;", (li[0],))
+            self.cur.execute("delete from profiles where username = ?;", (li[0],))
             self.base.commit()
             self.tree.delete(*self.tree.get_children())
             self.getusers()
@@ -849,7 +849,7 @@ class Admin:
             return
 
         self.cur.execute(
-            "INSERT INTO users (username, password, account_type) VALUES (?, ?, ?);",
+            "INSERT INTO profiles (username, password, account_type) VALUES (?, ?, ?);",
             (
                 self.usernamedit.get().upper(),
                 self.passwordedit.get().upper(),
@@ -868,7 +868,7 @@ class Admin:
         if self.searchvar.get() == "":
             return
         self.tree.delete(*self.tree.get_children())
-        self.cur.execute("select * from users")
+        self.cur.execute("select * from profiles")
         li = self.cur.fetchall()
         for i in li:
             if i[0] == self.searchvar.get():
