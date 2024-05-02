@@ -32,6 +32,31 @@ class Admin:
             .subsample(a, b)
             .zoom(BUTTON_WIDTH // 90)
         )
+        mi2 = (
+            PhotoImage(file="images/inventory.png")
+            .subsample(a, b)
+            .zoom(BUTTON_WIDTH // 90)
+        )
+        mi3 = (
+            PhotoImage(file="images/items.png")
+            .subsample(a, b)
+            .zoom(BUTTON_WIDTH // 90)
+        )
+        mi4 = (
+            PhotoImage(file="images/sales.png")
+            .subsample(a, b)
+            .zoom(BUTTON_WIDTH // 90)
+        )
+        mi5 = (
+            PhotoImage(file="images/change1.png")
+            .subsample(a, b)
+            .zoom(BUTTON_WIDTH // 90)
+        )
+        mi6 = (
+            PhotoImage(file="images/Door_Out-512.png")
+            .subsample(a, b)
+            .zoom(BUTTON_WIDTH // 90)
+        )
         self.mainframe = LabelFrame(self.mainw, width=1200, height=145, bg="#12171c")
         self.mainframe.place(x=100, y=100)
 
@@ -54,12 +79,12 @@ class Admin:
             text="Quit",
             bd=5,
             font="Montserrat 13 bold",
-            image=mi,
+            image=mi6,
             compound=TOP,
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
         )
-        self.logout.image = mi
+        self.logout.image = mi6
         self.logout.place(x=1050, y=27)
 
         self.changeuser = Button(
@@ -67,40 +92,40 @@ class Admin:
             text="Sign out",
             bd=5,
             font="Montserrat 13 bold",
-            image=mi,
+            image=mi5,
             compound=TOP,
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
         )
-        self.changeuser.image = mi
+        self.changeuser.image = mi5
         self.changeuser.place(x=855, y=27)
 
         self.items = Button(
             self.mainframe,
             text="Items",
             bd=5,
-            image=mi,
+            image=mi3,
             font="Montserrat 13 bold",
             compound=TOP,
             command=self.additems,
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
         )
-        self.items.image = mi
+        self.items.image = mi3
         self.items.place(x=47, y=27)
 
         self.stocks = Button(
             self.mainframe,
             text="Inventory",
             bd=5,
-            image=mi,
+            image=mi2,
             font="Montserrat 13 bold",
             compound=TOP,
             command=self.buildprodtable,
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
         )
-        self.stocks.image = mi
+        self.stocks.image = mi2
         self.stocks.place(x=255, y=27)
 
         self.sales = Button(
@@ -108,13 +133,13 @@ class Admin:
             text="Sales",
             bd=5,
             font="Montserrat 13 bold",
-            image=mi,
+            image=mi4,
             compound=TOP,
             command=self.buildsalestable,
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
         )
-        self.sales.image = mi
+        self.sales.image = mi4
         self.sales.place(x=450, y=27)
         self.formframe = Frame(self.mainw, width=500, height=550, bg="#12171c")
         self.formframe.place(x=100, y=315)
