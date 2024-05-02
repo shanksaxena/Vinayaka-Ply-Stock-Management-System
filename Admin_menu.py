@@ -971,6 +971,35 @@ class Admin:
             self.tableframe1, text="Total Sales", font="Montserrat 13 bold"
         ).place(x=0, y=400)
 
+    # def getsales(self):
+    #     self.cur.execute("select * from sales")
+    #     saleslist = self.cur.fetchall()
+    #     for i in range(0, len(saleslist)):
+    #         saleslist[i] = list(saleslist[i])
+    #         self.cur.execute(
+    #             "select product_desc,product_price from products where product_id=?",
+    #             (int(saleslist[i][2]),),
+    #         )
+    #         l = self.cur.fetchall()
+    #         if not l:  # Check if the list is not empty
+    #             continue
+    #         s = (str(saleslist[i][4])).split("-")
+    #         # print(saleslist[i])
+    #         saleslist[i][4] = s[2] + " - " + s[1] + " - " + s[0]
+    #         saleslist[i] = [
+    #             saleslist[i][0],
+    #             saleslist[i][1],
+    #             saleslist[i][2],
+    #             l[0][0],
+    #             saleslist[i][3],
+    #             l[0][1] * (int(saleslist[i][3])),
+    #             saleslist[i][4],
+    #             saleslist[i][5],
+    #         ]
+    #         saleslist[i] = tuple(saleslist[i])
+    #     for i in saleslist:
+    #         self.tree.insert("", "end", values=(i))
+
     def getsales(self):
         self.cur.execute("select * from sales")
         saleslist = self.cur.fetchall()
@@ -978,11 +1007,12 @@ class Admin:
             saleslist[i] = list(saleslist[i])
             self.cur.execute(
                 "select product_desc,product_price from products where product_id=?",
-                (int(saleslist[i][2]),),
+                (saleslist[i][2],),
             )
             l = self.cur.fetchall()
+            if not l:  # Check if the list is not empty
+                continue
             s = (str(saleslist[i][4])).split("-")
-            # print(saleslist[i])
             saleslist[i][4] = s[2] + " - " + s[1] + " - " + s[0]
             saleslist[i] = [
                 saleslist[i][0],
@@ -997,6 +1027,37 @@ class Admin:
             saleslist[i] = tuple(saleslist[i])
         for i in saleslist:
             self.tree.insert("", "end", values=(i))
+    # def searchinvoice(self):
+    #     if self.searchvar.get() == "":
+    #         return
+    #     self.tree.delete(*self.tree.get_children())
+    #     self.cur.execute("select * from sales")
+    #     saleslist = self.cur.fetchall()
+    #     for i in range(0, len(saleslist)):
+    #         saleslist[i] = list(saleslist[i])
+    #         self.cur.execute(
+    #             "select product_desc,product_price from products where product_id=?",
+    #             (int(saleslist[i][2]),),
+    #         )
+    #         l = self.cur.fetchall()
+    #         if not l:  # Check if the list is not empty
+    #             continue
+    #         s = (str(saleslist[i][4])).split("-")
+    #         saleslist[i][4] = s[2] + " - " + s[1] + " - " + s[0]
+    #         saleslist[i] = [
+    #             saleslist[i][0],
+    #             saleslist[i][1],
+    #             saleslist[i][2],
+    #             l[0][0],
+    #             saleslist[i][3],
+    #             l[0][1] * (int(saleslist[i][3])),
+    #             saleslist[i][4],
+    #             saleslist[i][5],
+    #         ]
+    #         saleslist[i] = tuple(saleslist[i])
+    #     for j in saleslist:
+    #         if str(j[1]) == str(self.searchvar.get()):
+    #             self.tree.insert("", "end", values=(j))
 
     def searchinvoice(self):
         if self.searchvar.get() == "":
@@ -1008,9 +1069,11 @@ class Admin:
             saleslist[i] = list(saleslist[i])
             self.cur.execute(
                 "select product_desc,product_price from products where product_id=?",
-                (int(saleslist[i][2]),),
+                (saleslist[i][2],),
             )
             l = self.cur.fetchall()
+            if not l:  # Check if the list is not empty
+                continue
             s = (str(saleslist[i][4])).split("-")
             saleslist[i][4] = s[2] + " - " + s[1] + " - " + s[0]
             saleslist[i] = [
@@ -1027,8 +1090,7 @@ class Admin:
         for j in saleslist:
             if str(j[1]) == str(self.searchvar.get()):
                 self.tree.insert("", "end", values=(j))
-
-                # FUNCTION TO PDF
+                     # FUNCTION TO PDF
 
     def generate_sales_pdf(self):
         # Connect to the database and fetch sales data
